@@ -195,6 +195,9 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <div id="orderDeadline" class="bg-green-dark px-3 py-1 rounded-lg text-sm"></div>
+                    <div id="orderWarning" class="hidden bg-orange-500 px-3 py-1 rounded-lg text-sm text-white animate-pulse">
+                        ⚠️ Pesanan sekarang untuk BESOK
+                    </div>
                     <button onclick="showPaymentHistory()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-300">
                         📋 Riwayat
                     </button>
@@ -287,6 +290,64 @@
 
         <!-- Main Content -->
         <main class="max-w-6xl mx-auto p-6">
+            <!-- Payment Recap Section -->
+            <div class="mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-green-primary">Rekap Pembayaran</h2>
+                    <div class="flex space-x-3">
+                        <button onclick="showPaymentRecap()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-300">
+                            📊 Lihat Rekap
+                        </button>
+                        <button onclick="downloadPaymentRecap()" class="bg-green-secondary hover:bg-green-primary text-white px-4 py-2 rounded-lg transition duration-300">
+                            📥 Download Excel
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Total Pesanan</p>
+                                <p id="totalOrders" class="text-2xl font-bold text-green-primary">0</p>
+                            </div>
+                            <div class="text-3xl">📋</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Sudah Bayar</p>
+                                <p id="paidOrders" class="text-2xl font-bold text-blue-primary">0</p>
+                            </div>
+                            <div class="text-3xl">✅</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow p-4 border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Belum Bayar</p>
+                                <p id="unpaidOrders" class="text-2xl font-bold text-red-primary">0</p>
+                            </div>
+                            <div class="text-3xl">❌</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Total Pendapatan</p>
+                                <p id="totalRevenue" class="text-lg font-bold text-yellow-600">Rp 0</p>
+                            </div>
+                            <div class="text-3xl">💰</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Product Management -->
                 <div class="lg:col-span-2">
@@ -332,8 +393,8 @@
     </div>
 
     <!-- Change Password Modal -->
-    <div id="changePasswordModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl p-6 w-full max-w-md">
+    <div id="changePasswordModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-3 z-50">
+        <div class="bg-white rounded-2xl p-4 sm:p-6 w-full max-w-md">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-xl font-bold text-green-primary">Ubah Password</h3>
                 <button onclick="closeChangePassword()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
@@ -363,8 +424,8 @@
     </div>
 
     <!-- Add Product Modal -->
-    <div id="addProductModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+    <div id="addProductModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-3 z-50">
+        <div class="bg-white rounded-2xl p-4 sm:p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold text-green-primary">Tambah Produk Baru</h3>
                 <button onclick="closeAddProduct()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
@@ -451,8 +512,8 @@
     </div>
 
     <!-- Cart Modal -->
-    <div id="cartModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+    <div id="cartModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-3 z-50">
+        <div class="bg-white rounded-2xl p-4 sm:p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold text-green-primary">Keranjang Belanja</h3>
                 <button onclick="closeCart()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
@@ -492,8 +553,8 @@
     </div>
 
     <!-- Edit Product Modal -->
-    <div id="editProductModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+    <div id="editProductModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-3 z-50">
+        <div class="bg-white rounded-2xl p-4 sm:p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold text-green-primary">Edit Produk</h3>
                 <button onclick="closeEditProduct()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
@@ -566,8 +627,8 @@
     </div>
 
     <!-- Order Item Modal -->
-    <div id="orderModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl p-6 w-full max-w-md">
+    <div id="orderModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-3 z-50">
+        <div class="bg-white rounded-2xl p-4 sm:p-6 w-full max-w-md">
             <div class="flex justify-between items-center mb-4">
                 <h3 id="orderModalTitle" class="text-xl font-bold text-green-primary">Pesan Item</h3>
                 <button onclick="closeOrderModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
@@ -580,8 +641,8 @@
     </div>
 
     <!-- Payment History Modal -->
-    <div id="paymentHistoryModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+    <div id="paymentHistoryModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-3 z-50">
+        <div class="bg-white rounded-2xl p-4 sm:p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-2xl font-bold text-green-primary">Riwayat Pembayaran</h3>
                 <button onclick="closePaymentHistory()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
@@ -608,8 +669,8 @@
     </div>
 
     <!-- Payment Info Modal -->
-    <div id="paymentInfoModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+    <div id="paymentInfoModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-3 z-50">
+        <div class="bg-white rounded-2xl p-4 sm:p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div class="text-center mb-6">
                 <div class="bg-green-primary rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                     <span class="text-white text-2xl">✅</span>
@@ -623,7 +684,10 @@
                     <span class="text-yellow-600 text-lg mr-2">⚠️</span>
                     <span class="font-medium text-yellow-800">Penting!</span>
                 </div>
-                <p class="text-yellow-700 text-sm">Batas pemesanan: <strong>07:20 Pagi</strong></p>
+                <p class="text-yellow-700 text-sm" id="orderDateInfo">
+                    Pesanan ini untuk: <strong>HARI INI</strong><br>
+                    Batas pemesanan harian: <strong>07:20 Pagi</strong>
+                </p>
             </div>
             
             <div id="paymentInfoContent" class="space-y-4 mb-6">
@@ -642,6 +706,83 @@
             <button onclick="closePaymentInfo()" class="w-full bg-green-primary hover:bg-green-dark text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
                 Mengerti
             </button>
+        </div>
+    </div>
+
+    <!-- Payment Recap Modal -->
+    <div id="paymentRecapModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-3 z-50">
+        <div class="bg-white rounded-2xl p-4 sm:p-6 w-full max-w-6xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-green-primary">📊 Rekap Pembayaran</h3>
+                <div class="flex space-x-3">
+                    <button onclick="downloadPaymentRecap()" class="bg-green-secondary hover:bg-green-primary text-white px-4 py-2 rounded-lg transition duration-300">
+                        📥 Download Excel
+                    </button>
+                    <button onclick="closePaymentRecap()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                </div>
+            </div>
+            
+            <!-- Filter Options -->
+            <div class="flex flex-wrap gap-3 mb-6">
+                <button onclick="filterRecap('all')" id="recapFilterAll" class="px-4 py-2 rounded-lg bg-green-primary text-white font-medium">
+                    Semua
+                </button>
+                <button onclick="filterRecap('paid')" id="recapFilterPaid" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300">
+                    Sudah Bayar
+                </button>
+                <button onclick="filterRecap('unpaid')" id="recapFilterUnpaid" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300">
+                    Belum Bayar
+                </button>
+                <button onclick="filterRecap('today')" id="recapFilterToday" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300">
+                    Hari Ini
+                </button>
+                <button onclick="filterRecap('week')" id="recapFilterWeek" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300">
+                    Minggu Ini
+                </button>
+            </div>
+            
+            <!-- Summary Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-blue-50 rounded-lg p-4 text-center">
+                    <div class="text-2xl font-bold text-blue-600" id="recapTotalOrders">0</div>
+                    <div class="text-sm text-gray-600">Total Pesanan</div>
+                </div>
+                <div class="bg-green-50 rounded-lg p-4 text-center">
+                    <div class="text-2xl font-bold text-green-600" id="recapPaidOrders">0</div>
+                    <div class="text-sm text-gray-600">Sudah Bayar</div>
+                </div>
+                <div class="bg-red-50 rounded-lg p-4 text-center">
+                    <div class="text-2xl font-bold text-red-600" id="recapUnpaidOrders">0</div>
+                    <div class="text-sm text-gray-600">Belum Bayar</div>
+                </div>
+                <div class="bg-yellow-50 rounded-lg p-4 text-center">
+                    <div class="text-lg font-bold text-yellow-600" id="recapTotalRevenue">Rp 0</div>
+                    <div class="text-sm text-gray-600">Total Pendapatan</div>
+                </div>
+            </div>
+            
+            <!-- Payment Table -->
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Siswa</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pesanan</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Metode</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recapTableBody" class="bg-white divide-y divide-gray-200">
+                            <!-- Table rows will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -949,12 +1090,39 @@
         // Initialize database
         Database.init();
 
-        // Show order deadline warning
+        // Show order deadline warning based on current time
         function showOrderDeadlineWarning() {
             const deadlineElement = document.getElementById('orderDeadline');
-            if (deadlineElement) {
-                deadlineElement.innerHTML = '⚠️ Batas Pemesanan: 07:20 Pagi';
-                deadlineElement.className = 'bg-yellow-500 px-3 py-1 rounded-lg text-sm text-white';
+            const warningElement = document.getElementById('orderWarning');
+            if (!deadlineElement || !warningElement) return;
+            
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            const currentTime = currentHour * 60 + currentMinute; // Convert to minutes
+            const deadlineTime = 7 * 60 + 20; // 7:20 AM in minutes
+            
+            if (currentTime < deadlineTime) {
+                // Before 7:20 AM - orders for today
+                const remainingMinutes = deadlineTime - currentTime;
+                const remainingHours = Math.floor(remainingMinutes / 60);
+                const remainingMins = remainingMinutes % 60;
+                
+                deadlineElement.innerHTML = `⏰ Sisa waktu pesan hari ini: ${remainingHours}j ${remainingMins}m`;
+                deadlineElement.className = 'bg-green-500 px-3 py-1 rounded-lg text-sm text-white animate-pulse';
+                warningElement.classList.add('hidden');
+                
+                // Show urgent warning when less than 30 minutes left
+                if (remainingMinutes <= 30) {
+                    deadlineElement.className = 'bg-red-500 px-3 py-1 rounded-lg text-sm text-white animate-pulse';
+                    deadlineElement.innerHTML = `🚨 SEGERA! Sisa ${remainingHours}j ${remainingMins}m untuk pesan hari ini`;
+                }
+            } else {
+                // After 7:20 AM - orders for tomorrow
+                deadlineElement.innerHTML = `📅 Batas pemesanan harian: 07:20 WIB`;
+                deadlineElement.className = 'bg-gray-500 px-3 py-1 rounded-lg text-sm text-white';
+                warningElement.classList.remove('hidden');
+                warningElement.innerHTML = '⚠️ Pesanan sekarang untuk BESOK';
             }
         }
 
@@ -1127,6 +1295,9 @@
                 loadMenuItems();
                 showOrderDeadlineWarning();
                 updateCartCount();
+                
+                // Update deadline warning every minute
+                setInterval(showOrderDeadlineWarning, 60000);
             } else {
                 currentSellerStand = user.stand;
                 updateSellerDashboardHeader();
@@ -1528,142 +1699,287 @@
                 return;
             }
             
-            const order = {
-                student: currentUser.username,
-                items: [...cart],
-                total: cart.reduce((sum, item) => sum + item.total, 0),
-                payment: selectedPayment.value,
-                status: 'pending',
-                paymentStatus: 'unpaid',
-                timestamp: new Date().toISOString()
-            };
+            // Check if ordering after deadline with detailed warning
+            const now = new Date();
+            const currentTime = now.getHours() * 60 + now.getMinutes();
+            const deadlineTime = 7 * 60 + 20; // 7:20 AM
             
-            Database.addOrder(order);
+            let orderDate = 'hari ini';
+            let confirmMessage = '';
             
-            // Show payment info popup
-            showPaymentInfo(order);
+            if (currentTime >= deadlineTime) {
+                orderDate = 'besok';
+                
+                // Show detailed warning modal
+                const warningModal = document.createElement('div');
+                warningModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50';
+                warningModal.innerHTML = `
+                    <div class="bg-white rounded-2xl p-6 w-full max-w-md">
+                        <div class="text-center mb-6">
+                            <div class="bg-orange-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                                <span class="text-white text-2xl">⚠️</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-orange-600 mb-2">Peringatan Waktu Pemesanan</h3>
+                        </div>
+                        
+                        <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+                            <div class="text-center">
+                                <p class="text-orange-800 font-bold text-lg mb-2">Waktu sudah melewati 07:20 WIB</p>
+                                <p class="text-orange-700 text-sm mb-3">Pesanan Anda akan dihitung untuk <strong>HARI BERIKUTNYA</strong></p>
+                                
+                                <div class="bg-white rounded-lg p-3 mb-3">
+                                    <div class="text-sm text-gray-600 space-y-1">
+                                        <div class="flex justify-between">
+                                            <span>Jumlah item:</span>
+                                            <span class="font-medium">${cart.length} item</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span>Total pembayaran:</span>
+                                            <span class="font-bold text-green-primary">Rp ${cart.reduce((sum, item) => sum + item.total, 0).toLocaleString()}</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span>Pesanan untuk:</span>
+                                            <span class="font-bold text-orange-600">BESOK</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-xs text-orange-600 bg-orange-100 rounded p-2">
+                                    <strong>Catatan:</strong> Batas pemesanan harian adalah pukul 07:20 WIB. 
+                                    Pesanan setelah jam tersebut otomatis masuk ke hari berikutnya.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex space-x-3">
+                            <button onclick="cancelOrder()" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
+                                ❌ Batal
+                            </button>
+                            <button onclick="confirmOrderForTomorrow()" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
+                                ✅ Lanjutkan untuk Besok
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(warningModal);
+                
+                // Add functions for the warning modal
+                window.cancelOrder = function() {
+                    document.body.removeChild(warningModal);
+                };
+                
+                window.confirmOrderForTomorrow = function() {
+                    document.body.removeChild(warningModal);
+                    processOrder(orderDate, selectedPayment.value);
+                };
+                
+                return; // Stop here and wait for user decision
+            } else {
+                // Order for today - show quick confirmation
+                const remainingMinutes = deadlineTime - currentTime;
+                const remainingHours = Math.floor(remainingMinutes / 60);
+                const remainingMins = remainingMinutes % 60;
+                
+                confirmMessage = `✅ PESANAN UNTUK HARI INI\n\n` +
+                    `Sisa waktu pemesanan: ${remainingHours}j ${remainingMins}m\n\n` +
+                    `Pesanan: ${cart.length} item\n` +
+                    `Total: Rp ${cart.reduce((sum, item) => sum + item.total, 0).toLocaleString()}\n\n` +
+                    `Lanjutkan pesanan untuk hari ini?`;
+                
+                if (!confirm(confirmMessage)) {
+                    return;
+                }
+            }
             
-            cart = [];
-            updateCartCount();
-            closeCart();
+            processOrder(orderDate, selectedPayment.value);
+        }
+        
+        function processOrder(orderDate, paymentMethod) {
+            try {
+                const order = {
+                    student: currentUser.username,
+                    items: [...cart],
+                    total: cart.reduce((sum, item) => sum + item.total, 0),
+                    payment: paymentMethod,
+                    status: 'pending',
+                    paymentStatus: 'unpaid',
+                    timestamp: new Date().toISOString(),
+                    orderDate: orderDate
+                };
+                
+                // Add order to database
+                const savedOrder = Database.addOrder(order);
+                
+                // Show success notification
+                const notification = document.createElement('div');
+                notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-pulse';
+                notification.innerHTML = '✅ Pesanan berhasil dibuat!';
+                document.body.appendChild(notification);
+                
+                // Remove notification after 3 seconds
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 3000);
+                
+                // Show payment info popup
+                showPaymentInfo(savedOrder);
+                
+                // Clear cart and close modal
+                cart = [];
+                updateCartCount();
+                closeCart();
+                
+            } catch (error) {
+                console.error('Error creating order:', error);
+                alert('Terjadi kesalahan saat membuat pesanan. Silakan coba lagi.');
+            }
         }
 
         function showPaymentInfo(order) {
-            const products = Database.getProducts();
-            // Get sellers from order items
-            const sellersInOrder = [...new Set(order.items.map(item => {
-                const product = products.find(p => p.id === item.productId);
-                return product ? product.seller : null;
-            }).filter(seller => seller))];
-            
-            // Group items by seller
-            const itemsBySeller = {};
-            order.items.forEach(item => {
-                const product = products.find(p => p.id === item.productId);
-                if (product) {
-                    if (!itemsBySeller[product.seller]) {
-                        itemsBySeller[product.seller] = [];
-                    }
-                    itemsBySeller[product.seller].push(item);
-                }
-            });
-            
-            const content = document.getElementById('paymentInfoContent');
-            content.innerHTML = '';
-            
-            // Show order summary
-            const orderSummary = document.createElement('div');
-            orderSummary.className = 'bg-gray-50 rounded-lg p-4 mb-4';
-            orderSummary.innerHTML = `
-                <h4 class="font-medium text-gray-800 mb-3">Ringkasan Pesanan:</h4>
-                <div class="space-y-2 text-sm">
-                    ${order.items.map(item => `
-                        <div class="flex justify-between">
-                            <span>${item.quantity}x ${item.name}</span>
-                            <span>Rp ${item.total.toLocaleString()}</span>
-                        </div>
-                    `).join('')}
-                </div>
-                <div class="border-t mt-3 pt-3 flex justify-between font-bold">
-                    <span>Total Pembayaran:</span>
-                    <span class="text-green-primary">Rp ${order.total.toLocaleString()}</span>
-                </div>
-                <div class="mt-2 text-sm text-gray-600">
-                    Metode: ${order.payment.toUpperCase()}
-                </div>
-            `;
-            content.appendChild(orderSummary);
-            
-            // Show payment method specific info
-            const bankAccounts = Database.getBankAccounts();
-            
-            if (order.payment === 'gopay') {
-                // Show GoPay payment info
-                const gopayCard = document.createElement('div');
-                gopayCard.className = 'border border-green-200 rounded-lg p-4 bg-green-50';
-                gopayCard.innerHTML = `
-                    <div class="flex items-center justify-between mb-3">
-                        <h4 class="font-bold text-green-800">💚 GoPay</h4>
-                        <span class="text-sm bg-green-200 text-green-800 px-2 py-1 rounded">
-                            Rp ${order.total.toLocaleString()}
-                        </span>
-                    </div>
-                    <div class="space-y-2 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Nomor GoPay:</span>
-                            <span class="font-mono font-bold text-lg">088263481927</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Atas Nama:</span>
-                            <span class="font-medium">Kantin Sekolah</span>
-                        </div>
-                    </div>
-                    <div class="mt-3 text-xs text-green-700">
-                        Transfer ke nomor GoPay di atas dengan total yang tertera
-                    </div>
-                `;
-                content.appendChild(gopayCard);
-            } else {
-                // Show bank account info for each seller (BCA payment)
-                sellersInOrder.forEach(seller => {
-                    const bankInfo = bankAccounts[seller];
-                    if (bankInfo) {
-                        const sellerItems = itemsBySeller[seller];
-                        const sellerTotal = sellerItems.reduce((sum, item) => sum + item.total, 0);
-                        
-                        const bankCard = document.createElement('div');
-                        bankCard.className = 'border border-green-200 rounded-lg p-4 bg-green-50';
-                        bankCard.innerHTML = `
-                            <div class="flex items-center justify-between mb-3">
-                                <h4 class="font-bold text-green-800">${seller}</h4>
-                                <span class="text-sm bg-green-200 text-green-800 px-2 py-1 rounded">
-                                    Rp ${sellerTotal.toLocaleString()}
-                                </span>
-                            </div>
-                            <div class="space-y-2 text-sm">
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">Bank:</span>
-                                    <span class="font-medium">${bankInfo.bank}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">No. Rekening:</span>
-                                    <span class="font-mono font-bold text-lg">${bankInfo.accountNumber}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">Atas Nama:</span>
-                                    <span class="font-medium">${bankInfo.accountName}</span>
-                                </div>
-                            </div>
-                            <div class="mt-3 text-xs text-green-700">
-                                Items: ${sellerItems.map(item => `${item.quantity}x ${item.name}`).join(', ')}
-                            </div>
-                        `;
-                        content.appendChild(bankCard);
+            try {
+                const products = Database.getProducts();
+                
+                // Get sellers from order items
+                const sellersInOrder = [...new Set(order.items.map(item => {
+                    const product = products.find(p => p.id === item.productId);
+                    return product ? product.seller : null;
+                }).filter(seller => seller))];
+                
+                // Group items by seller
+                const itemsBySeller = {};
+                order.items.forEach(item => {
+                    const product = products.find(p => p.id === item.productId);
+                    if (product) {
+                        if (!itemsBySeller[product.seller]) {
+                            itemsBySeller[product.seller] = [];
+                        }
+                        itemsBySeller[product.seller].push(item);
                     }
                 });
+                
+                // Update order date info
+                const orderDateInfo = document.getElementById('orderDateInfo');
+                if (orderDateInfo) {
+                    orderDateInfo.innerHTML = `
+                        Pesanan ini untuk: <strong>${order.orderDate === 'besok' ? 'BESOK' : 'HARI INI'}</strong><br>
+                        Batas pemesanan harian: <strong>07:20 Pagi</strong>
+                    `;
+                }
+                
+                const content = document.getElementById('paymentInfoContent');
+                if (!content) {
+                    console.error('Payment info content element not found');
+                    return;
+                }
+                content.innerHTML = '';
+                
+                // Show order summary
+                const orderSummary = document.createElement('div');
+                orderSummary.className = 'bg-gray-50 rounded-lg p-4 mb-4';
+                orderSummary.innerHTML = `
+                    <h4 class="font-medium text-gray-800 mb-3">Ringkasan Pesanan:</h4>
+                    <div class="space-y-2 text-sm">
+                        ${order.items.map(item => {
+                            const addonsText = item.addons && item.addons.length > 0 
+                                ? `<div class="text-xs text-gray-500 ml-4">+ ${item.addons.map(addon => addon.name).join(', ')}</div>`
+                                : '';
+                            return `
+                                <div class="flex justify-between">
+                                    <span>${item.quantity}x ${item.name}</span>
+                                    <span>Rp ${item.total.toLocaleString()}</span>
+                                </div>
+                                ${addonsText}
+                            `;
+                        }).join('')}
+                    </div>
+                    <div class="border-t mt-3 pt-3 flex justify-between font-bold">
+                        <span>Total Pembayaran:</span>
+                        <span class="text-green-primary">Rp ${order.total.toLocaleString()}</span>
+                    </div>
+                    <div class="mt-2 text-sm text-gray-600">
+                        Metode: ${order.payment.toUpperCase()}
+                    </div>
+                `;
+                content.appendChild(orderSummary);
+                
+                // Show payment method specific info
+                const bankAccounts = Database.getBankAccounts();
+                
+                if (order.payment === 'gopay') {
+                    // Show GoPay payment info
+                    const gopayCard = document.createElement('div');
+                    gopayCard.className = 'border border-green-200 rounded-lg p-4 bg-green-50';
+                    gopayCard.innerHTML = `
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-bold text-green-800">💚 GoPay</h4>
+                            <span class="text-sm bg-green-200 text-green-800 px-2 py-1 rounded">
+                                Rp ${order.total.toLocaleString()}
+                            </span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Nomor GoPay:</span>
+                                <span class="font-mono font-bold text-lg">088263481927</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Atas Nama:</span>
+                                <span class="font-medium">Kantin Sekolah</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-xs text-green-700">
+                            Transfer ke nomor GoPay di atas dengan total yang tertera
+                        </div>
+                    `;
+                    content.appendChild(gopayCard);
+                } else {
+                    // Show bank account info for each seller (BCA payment)
+                    sellersInOrder.forEach(seller => {
+                        const bankInfo = bankAccounts[seller];
+                        if (bankInfo) {
+                            const sellerItems = itemsBySeller[seller];
+                            const sellerTotal = sellerItems.reduce((sum, item) => sum + item.total, 0);
+                            
+                            const bankCard = document.createElement('div');
+                            bankCard.className = 'border border-blue-200 rounded-lg p-4 bg-blue-50 mb-3';
+                            bankCard.innerHTML = `
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="font-bold text-blue-800">🏦 ${seller}</h4>
+                                    <span class="text-sm bg-blue-200 text-blue-800 px-2 py-1 rounded">
+                                        Rp ${sellerTotal.toLocaleString()}
+                                    </span>
+                                </div>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Bank:</span>
+                                        <span class="font-medium">${bankInfo.bank}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">No. Rekening:</span>
+                                        <span class="font-mono font-bold text-lg">${bankInfo.accountNumber}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Atas Nama:</span>
+                                        <span class="font-medium">${bankInfo.accountName}</span>
+                                    </div>
+                                </div>
+                                <div class="mt-3 text-xs text-blue-700">
+                                    Items: ${sellerItems.map(item => `${item.quantity}x ${item.name}`).join(', ')}
+                                </div>
+                            `;
+                            content.appendChild(bankCard);
+                        }
+                    });
+                }
+                
+                document.getElementById('paymentInfoModal').classList.remove('hidden');
+                
+            } catch (error) {
+                console.error('Error showing payment info:', error);
+                alert('Terjadi kesalahan saat menampilkan info pembayaran.');
             }
-            
-            document.getElementById('paymentInfoModal').classList.remove('hidden');
         }
 
         function closePaymentInfo() {
@@ -1747,6 +2063,11 @@
                                 <span class="px-3 py-1 rounded-full text-sm font-medium ${isPaid ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
                                     ${isPaid ? '✅ Sudah Bayar' : '❌ Belum Bayar'}
                                 </span>
+                                ${order.orderDate === 'besok' ? `
+                                    <span class="px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                                        📅 Besok
+                                    </span>
+                                ` : ''}
                             </div>
                             <p class="text-sm text-gray-600">${orderDate.toLocaleDateString('id-ID', { 
                                 weekday: 'long', 
@@ -1949,6 +2270,7 @@
             
             if (sellerOrders.length === 0) {
                 container.innerHTML = '<p class="text-gray-500 text-center py-4">Belum ada pesanan hari ini</p>';
+                updateSellerStats(sellerOrders);
                 return;
             }
             
@@ -1987,6 +2309,380 @@
                 `;
                 container.appendChild(orderCard);
             });
+            
+            // Update stats
+            updateSellerStats(sellerOrders);
+        }
+
+        function updateSellerStats(sellerOrders) {
+            const products = Database.getProducts();
+            
+            // Calculate stats for current seller
+            let totalOrders = 0;
+            let paidOrders = 0;
+            let unpaidOrders = 0;
+            let totalRevenue = 0;
+            
+            sellerOrders.forEach(order => {
+                const sellerItems = order.items.filter(item => {
+                    const product = products.find(p => p.id === item.productId);
+                    return product && product.stand === currentSellerStand;
+                });
+                
+                if (sellerItems.length > 0) {
+                    totalOrders++;
+                    const sellerTotal = sellerItems.reduce((sum, item) => sum + item.total, 0);
+                    
+                    if (order.paymentStatus === 'paid') {
+                        paidOrders++;
+                        totalRevenue += sellerTotal;
+                    } else {
+                        unpaidOrders++;
+                    }
+                }
+            });
+            
+            // Update dashboard stats
+            const totalOrdersEl = document.getElementById('totalOrders');
+            const paidOrdersEl = document.getElementById('paidOrders');
+            const unpaidOrdersEl = document.getElementById('unpaidOrders');
+            const totalRevenueEl = document.getElementById('totalRevenue');
+            
+            if (totalOrdersEl) totalOrdersEl.textContent = totalOrders;
+            if (paidOrdersEl) paidOrdersEl.textContent = paidOrders;
+            if (unpaidOrdersEl) unpaidOrdersEl.textContent = unpaidOrders;
+            if (totalRevenueEl) totalRevenueEl.textContent = `Rp ${totalRevenue.toLocaleString()}`;
+        }
+
+        // Payment Recap Functions
+        function showPaymentRecap() {
+            document.getElementById('paymentRecapModal').classList.remove('hidden');
+            filterRecap('all');
+        }
+
+        function closePaymentRecap() {
+            document.getElementById('paymentRecapModal').classList.add('hidden');
+        }
+
+        function filterRecap(filter) {
+            // Update active filter button
+            document.querySelectorAll('[id^="recapFilter"]').forEach(btn => {
+                btn.className = 'px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300';
+            });
+            document.getElementById(`recapFilter${filter.charAt(0).toUpperCase() + filter.slice(1)}`).className = 'px-4 py-2 rounded-lg bg-green-primary text-white font-medium';
+
+            const orders = Database.getOrders();
+            const products = Database.getProducts();
+            
+            // Filter orders for current seller
+            let sellerOrders = orders.filter(order => {
+                return order.items.some(item => {
+                    const product = products.find(p => p.id === item.productId);
+                    return product && product.stand === currentSellerStand;
+                });
+            });
+
+            // Apply additional filters
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const weekStart = new Date(today);
+            weekStart.setDate(today.getDate() - today.getDay());
+
+            switch (filter) {
+                case 'paid':
+                    sellerOrders = sellerOrders.filter(order => order.paymentStatus === 'paid');
+                    break;
+                case 'unpaid':
+                    sellerOrders = sellerOrders.filter(order => order.paymentStatus === 'unpaid');
+                    break;
+                case 'today':
+                    sellerOrders = sellerOrders.filter(order => {
+                        const orderDate = new Date(order.timestamp);
+                        return orderDate >= today;
+                    });
+                    break;
+                case 'week':
+                    sellerOrders = sellerOrders.filter(order => {
+                        const orderDate = new Date(order.timestamp);
+                        return orderDate >= weekStart;
+                    });
+                    break;
+            }
+
+            displayRecapTable(sellerOrders);
+            updateRecapStats(sellerOrders);
+        }
+
+        function displayRecapTable(ordersList) {
+            const tbody = document.getElementById('recapTableBody');
+            tbody.innerHTML = '';
+
+            if (ordersList.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="px-6 py-8 text-center text-gray-500">
+                            <div class="text-4xl mb-2">📋</div>
+                            <p>Tidak ada data pesanan</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            const products = Database.getProducts();
+            ordersList.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            ordersList.forEach((order, index) => {
+                // Filter items for current seller
+                const sellerItems = order.items.filter(item => {
+                    const product = products.find(p => p.id === item.productId);
+                    return product && product.stand === currentSellerStand;
+                });
+
+                if (sellerItems.length === 0) return;
+
+                const sellerTotal = sellerItems.reduce((sum, item) => sum + item.total, 0);
+                const orderDate = new Date(order.timestamp);
+                const isPaid = order.paymentStatus === 'paid';
+
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${index + 1}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        ${orderDate.toLocaleDateString('id-ID', { 
+                            day: '2-digit', 
+                            month: '2-digit', 
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${order.student}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">
+                        <div class="max-w-xs">
+                            ${sellerItems.map(item => `${item.quantity}x ${item.name}`).join(', ')}
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">
+                        Rp ${sellerTotal.toLocaleString()}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 uppercase">
+                        ${order.payment}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full ${isPaid ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                            ${isPaid ? '✅ Sudah Bayar' : '❌ Belum Bayar'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        <button onclick="togglePaymentStatus(${order.id})" class="px-3 py-1 rounded text-xs font-medium transition duration-300 ${isPaid ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white'}">
+                            ${isPaid ? 'Tandai Belum Bayar' : 'Tandai Sudah Bayar'}
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateRecapStats(ordersList) {
+            const products = Database.getProducts();
+            
+            let totalOrders = 0;
+            let paidOrders = 0;
+            let unpaidOrders = 0;
+            let totalRevenue = 0;
+
+            ordersList.forEach(order => {
+                const sellerItems = order.items.filter(item => {
+                    const product = products.find(p => p.id === item.productId);
+                    return product && product.stand === currentSellerStand;
+                });
+
+                if (sellerItems.length > 0) {
+                    totalOrders++;
+                    const sellerTotal = sellerItems.reduce((sum, item) => sum + item.total, 0);
+
+                    if (order.paymentStatus === 'paid') {
+                        paidOrders++;
+                        totalRevenue += sellerTotal;
+                    } else {
+                        unpaidOrders++;
+                    }
+                }
+            });
+
+            document.getElementById('recapTotalOrders').textContent = totalOrders;
+            document.getElementById('recapPaidOrders').textContent = paidOrders;
+            document.getElementById('recapUnpaidOrders').textContent = unpaidOrders;
+            document.getElementById('recapTotalRevenue').textContent = `Rp ${totalRevenue.toLocaleString()}`;
+        }
+
+        function togglePaymentStatus(orderId) {
+            const orders = Database.getOrders();
+            const order = orders.find(o => o.id === orderId);
+            
+            if (order) {
+                const newStatus = order.paymentStatus === 'paid' ? 'unpaid' : 'paid';
+                Database.updateOrder(orderId, { paymentStatus: newStatus });
+                
+                // Refresh current filter
+                const activeFilter = document.querySelector('[id^="recapFilter"].bg-green-primary').id.replace('recapFilter', '').toLowerCase();
+                filterRecap(activeFilter);
+                
+                // Update main dashboard stats
+                loadTodayOrders();
+                
+                alert(`Status pembayaran berhasil diubah menjadi ${newStatus === 'paid' ? 'sudah bayar' : 'belum bayar'}!`);
+            }
+        }
+
+        function downloadPaymentRecap() {
+            const orders = Database.getOrders();
+            const products = Database.getProducts();
+            
+            // Filter orders for current seller
+            const sellerOrders = orders.filter(order => {
+                return order.items.some(item => {
+                    const product = products.find(p => p.id === item.productId);
+                    return product && product.stand === currentSellerStand;
+                });
+            });
+
+            if (sellerOrders.length === 0) {
+                alert('Tidak ada data untuk didownload!');
+                return;
+            }
+
+            // Show loading notification
+            const loadingNotification = document.createElement('div');
+            loadingNotification.className = 'fixed top-4 right-4 bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+            loadingNotification.innerHTML = '⏳ Menyiapkan file Excel...';
+            document.body.appendChild(loadingNotification);
+
+            // Create Excel-compatible CSV with BOM for proper UTF-8 encoding
+            const BOM = '\uFEFF';
+            let csvContent = BOM + 'No,Tanggal,Waktu,Nama Siswa,Pesanan,Jumlah Item,Total Harga,Metode Pembayaran,Status Pembayaran,Catatan\n';
+            
+            sellerOrders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            let totalPendapatan = 0;
+            let totalPesananPaid = 0;
+            let totalPesananUnpaid = 0;
+            
+            sellerOrders.forEach((order, index) => {
+                const sellerItems = order.items.filter(item => {
+                    const product = products.find(p => p.id === item.productId);
+                    return product && product.stand === currentSellerStand;
+                });
+
+                if (sellerItems.length === 0) return;
+
+                const sellerTotal = sellerItems.reduce((sum, item) => sum + item.total, 0);
+                const orderDate = new Date(order.timestamp);
+                const formattedDate = orderDate.toLocaleDateString('id-ID', { 
+                    day: '2-digit', 
+                    month: '2-digit', 
+                    year: 'numeric'
+                });
+                const formattedTime = orderDate.toLocaleTimeString('id-ID', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                const orderItems = sellerItems.map(item => {
+                    const addons = item.addons && item.addons.length > 0 
+                        ? ` (+ ${item.addons.map(addon => addon.name).join(', ')})` 
+                        : '';
+                    return `${item.quantity}x ${item.name}${addons}`;
+                }).join('; ');
+                
+                const totalItems = sellerItems.reduce((sum, item) => sum + item.quantity, 0);
+                const paymentStatus = order.paymentStatus === 'paid' ? 'Sudah Bayar' : 'Belum Bayar';
+                const orderNote = order.orderDate === 'besok' ? 'Pesanan untuk besok' : 'Pesanan hari ini';
+                
+                // Update statistics
+                if (order.paymentStatus === 'paid') {
+                    totalPendapatan += sellerTotal;
+                    totalPesananPaid++;
+                } else {
+                    totalPesananUnpaid++;
+                }
+                
+                csvContent += `${index + 1},"${formattedDate}","${formattedTime}","${order.student}","${orderItems}",${totalItems},"Rp ${sellerTotal.toLocaleString('id-ID')}","${order.payment.toUpperCase()}","${paymentStatus}","${orderNote}"\n`;
+            });
+            
+            // Add summary at the end
+            csvContent += '\n';
+            csvContent += 'RINGKASAN LAPORAN\n';
+            csvContent += `Total Pesanan,${sellerOrders.length}\n`;
+            csvContent += `Pesanan Sudah Bayar,${totalPesananPaid}\n`;
+            csvContent += `Pesanan Belum Bayar,${totalPesananUnpaid}\n`;
+            csvContent += `Total Pendapatan,"Rp ${totalPendapatan.toLocaleString('id-ID')}"\n`;
+            csvContent += `Tanggal Laporan,"${new Date().toLocaleDateString('id-ID', { 
+                weekday: 'long',
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            })}"\n`;
+
+            try {
+                // Create and download file
+                const blob = new Blob([csvContent], { 
+                    type: 'text/csv;charset=utf-8;' 
+                });
+                
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                
+                const standNames = {
+                    'miracle': 'Miracle',
+                    'sepiring-hati': 'Sepiring_Hati',
+                    'om-china': 'Om_China'
+                };
+                
+                const today = new Date();
+                const dateStr = today.toISOString().split('T')[0];
+                const timeStr = today.toTimeString().split(' ')[0].replace(/:/g, '-');
+                const filename = `Rekap_Pembayaran_${standNames[currentSellerStand]}_${dateStr}_${timeStr}.csv`;
+                
+                link.setAttribute('download', filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Clean up
+                URL.revokeObjectURL(url);
+                
+                // Remove loading notification
+                document.body.removeChild(loadingNotification);
+                
+                // Show success notification
+                const successNotification = document.createElement('div');
+                successNotification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+                successNotification.innerHTML = `✅ File Excel berhasil didownload!<br><small>Nama file: ${filename}</small>`;
+                document.body.appendChild(successNotification);
+                
+                // Auto-hide success notification
+                setTimeout(() => {
+                    if (successNotification.parentNode) {
+                        successNotification.parentNode.removeChild(successNotification);
+                    }
+                }, 5000);
+                
+            } catch (error) {
+                // Remove loading notification
+                if (loadingNotification.parentNode) {
+                    document.body.removeChild(loadingNotification);
+                }
+                
+                console.error('Download error:', error);
+                alert('Terjadi kesalahan saat mendownload file. Silakan coba lagi.');
+            }
         }
 
         function completeOrder(orderId) {
@@ -2357,5 +3053,5 @@
             setupDragAndDrop();
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9722ae08542cae45',t:'MTc1NTcwMTE4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97482608c3ece77e',t:'MTc1NjA5NDA3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
