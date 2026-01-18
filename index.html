@@ -1,790 +1,286 @@
-<!doctype html>
-<html lang="id" class="h-full">
- <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kenyang.in - Ursulin Online Canteen</title>
-  <script src="/_sdk/data_sdk.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>kenyang.in – Kantin Bougenville</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-        body {
-            box-sizing: border-box;
-        }
-        
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes pulse-notification {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-        
-        .notification-enter {
-            animation: slideIn 0.3s ease-out;
-        }
-        
-        .notification-badge {
-            animation: pulse-notification 2s infinite;
-        }
-        
-        .break-time-warning {
-            animation: pulse-notification 1.5s infinite;
-        }
 
-        /* Mobile optimizations */
-        @media (max-width: 640px) {
-            .mobile-text-sm {
-                font-size: 0.875rem;
-            }
-            .mobile-p-2 {
-                padding: 0.5rem;
-            }
-        }
-    </style>
-  <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'kenyang-primary': '#059669',
-                        'kenyang-secondary': '#10b981',
-                        'kenyang-light': '#d1fae5',
-                        'kenyang-dark': '#047857'
-                    }
-                }
-            }
-        }
-    </script>
-  <style>@view-transition { navigation: auto; }</style>
-  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
- </head>
- <body class="bg-gradient-to-br from-green-50 to-emerald-50 min-h-screen h-full overflow-auto"><!-- Login Selection Screen -->
-  <div id="loginSelection" class="min-h-screen flex items-center justify-center p-4">
-   <div class="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 w-full max-w-md">
-    <div class="text-center mb-6 sm:mb-8">
-     <div class="bg-gradient-to-r from-kenyang-primary to-kenyang-secondary rounded-full w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center mx-auto mb-4 shadow-lg"><span class="text-white text-3xl sm:text-4xl">🍽️</span>
-     </div>
-     <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-2 sm:mb-3">Kenyang.in</h1>
-     <p class="text-xl sm:text-2xl font-semibold text-kenyang-primary mb-2">Ursulin Online Canteen</p>
-     <p class="text-xs sm:text-sm text-gray-500 italic">Made by Jofran and Darren</p>
-    </div>
-    <div class="space-y-3 sm:space-y-4"><button onclick="showLogin('student')" class="w-full bg-gradient-to-r from-kenyang-primary to-kenyang-secondary hover:from-kenyang-dark hover:to-kenyang-primary text-white font-semibold py-3 sm:py-4 px-4 sm:px-6 rounded-xl transition duration-300 flex items-center justify-center space-x-2 sm:space-x-3 shadow-lg transform hover:scale-105"> <span class="text-xl sm:text-2xl">👨‍🎓</span> <span class="text-base sm:text-lg">Login Siswa</span> </button> <button onclick="showLogin('seller')" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold py-3 sm:py-4 px-4 sm:px-6 rounded-xl transition duration-300 flex items-center justify-center space-x-2 sm:space-x-3 shadow-lg transform hover:scale-105"> <span class="text-xl sm:text-2xl">👨‍🍳</span> <span class="text-base sm:text-lg">Login Penjual</span> </button> <button onclick="showRegister()" class="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold py-3 sm:py-4 px-4 sm:px-6 rounded-xl transition duration-300 flex items-center justify-center space-x-2 sm:space-x-3 shadow-lg transform hover:scale-105"> <span class="text-xl sm:text-2xl">📝</span> <span class="text-base sm:text-lg">Daftar Akun Baru</span> </button>
-    </div>
-   </div>
-  </div><!-- Register Form -->
-  <div id="registerForm" class="hidden min-h-screen flex items-center justify-center p-4">
-   <div class="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 w-full max-w-md"><button onclick="backToSelection()" class="mb-4 text-kenyang-primary hover:text-kenyang-dark flex items-center text-sm sm:text-base"> <span class="text-lg sm:text-xl mr-2">←</span> Kembali </button>
-    <div class="text-center mb-6 sm:mb-8">
-     <div class="bg-gradient-to-r from-kenyang-primary to-kenyang-secondary rounded-full w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center mx-auto mb-3 sm:mb-4"><span class="text-white text-xl sm:text-2xl">📝</span>
-     </div>
-     <h2 class="text-xl sm:text-2xl font-bold text-kenyang-primary mb-2">Daftar Akun Baru</h2>
-    </div>
-    <form onsubmit="handleRegister(event)" class="space-y-3 sm:space-y-4">
-     <div><label class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Tipe Akun</label> <select id="registerType" required class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kenyang-primary focus:border-transparent text-sm sm:text-base"> <option value="">Pilih tipe akun</option> <option value="student">Siswa</option> <option value="seller">Penjual</option> </select>
-     </div>
-     <div><label class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Nama Lengkap</label> <input type="text" id="registerName" required class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kenyang-primary focus:border-transparent text-sm sm:text-base">
-     </div>
-     <div><label class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Username</label> <input type="text" id="registerUsername" required class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kenyang-primary focus:border-transparent text-sm sm:text-base">
-     </div>
-     <div><label class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Password</label> <input type="password" id="registerPassword" required class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kenyang-primary focus:border-transparent text-sm sm:text-base">
-     </div>
-     <div><label class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Konfirmasi Password</label> <input type="password" id="registerConfirmPassword" required class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kenyang-primary focus:border-transparent text-sm sm:text-base">
-     </div><button type="submit" class="w-full bg-gradient-to-r from-kenyang-primary to-kenyang-secondary hover:from-kenyang-dark hover:to-kenyang-primary text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition duration-300 shadow-lg text-sm sm:text-base"> Daftar </button>
-    </form>
-   </div>
-  </div><!-- Login Form -->
-  <div id="loginForm" class="hidden min-h-screen flex items-center justify-center p-4">
-   <div class="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 w-full max-w-md"><button onclick="backToSelection()" class="mb-4 text-kenyang-primary hover:text-kenyang-dark flex items-center text-sm sm:text-base"> <span class="text-lg sm:text-xl mr-2">←</span> Kembali </button>
-    <div class="text-center mb-6 sm:mb-8">
-     <div class="bg-gradient-to-r from-kenyang-primary to-kenyang-secondary rounded-full w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center mx-auto mb-3 sm:mb-4"><span id="loginIcon" class="text-white text-xl sm:text-2xl">👨‍🎓</span>
-     </div>
-     <h2 id="loginTitle" class="text-xl sm:text-2xl font-bold text-kenyang-primary mb-2">Login Siswa</h2>
-    </div>
-    <form onsubmit="handleLogin(event)" class="space-y-3 sm:space-y-4">
-     <div><label class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Username</label> <input type="text" id="username" required class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kenyang-primary focus:border-transparent text-sm sm:text-base">
-     </div>
-     <div><label class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Password</label> <input type="password" id="password" required class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kenyang-primary focus:border-transparent text-sm sm:text-base">
-     </div><button type="submit" class="w-full bg-gradient-to-r from-kenyang-primary to-kenyang-secondary hover:from-kenyang-dark hover:to-kenyang-primary text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition duration-300 shadow-lg text-sm sm:text-base"> Masuk </button>
-    </form>
-   </div>
-  </div><!-- Student Dashboard -->
-  <div id="studentDashboard" class="hidden min-h-screen h-full w-full"><!-- Header -->
-   <header class="bg-gradient-to-r from-kenyang-primary to-kenyang-secondary text-white p-3 sm:p-4 shadow-lg">
-    <div class="flex justify-between items-center max-w-6xl mx-auto">
-     <div class="flex items-center space-x-2 sm:space-x-3"><span class="text-2xl sm:text-3xl">🍽️</span>
-      <div>
-       <h1 class="text-lg sm:text-2xl font-bold">Kenyang.in</h1>
-       <p id="welcomeStudent" class="text-xs sm:text-sm opacity-90">Selamat datang!</p>
-      </div>
-     </div>
-     <div class="flex items-center space-x-2 sm:space-x-4"><button onclick="showPaymentHistory()" class="relative bg-blue-500 hover:bg-blue-600 text-white px-2 sm:px-4 py-1 sm:py-2 rounded-lg transition duration-300 shadow text-xs sm:text-base"> 📋<span class="hidden sm:inline"> Riwayat</span> </button> <button onclick="showCart()" class="relative bg-emerald-600 hover:bg-emerald-700 px-2 sm:px-4 py-1 sm:py-2 rounded-lg transition duration-300 shadow text-xs sm:text-base"> 🛒<span class="hidden sm:inline"> Keranjang</span> <span id="cartCount" class="bg-red-500 text-white rounded-full px-1.5 sm:px-2 py-0.5 sm:py-1 text-xs ml-1">0</span> </button> <button onclick="logout()" class="bg-red-500 hover:bg-red-600 px-2 sm:px-4 py-1 sm:py-2 rounded-lg transition duration-300 shadow text-xs sm:text-base">Keluar</button>
-     </div>
-    </div>
-    <div id="breakTimeWarning" class="hidden bg-orange-500 mt-3 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm break-time-warning shadow-lg text-center">
-     ⚠️ <strong>JAM ISTIRAHAT</strong> - Pesananmu mungkin terlambat dibaca
-    </div>
-   </header><!-- Notification Container for Students -->
-   <div id="studentNotificationContainer" class="fixed top-16 sm:top-20 right-2 sm:right-4 z-50 space-y-2 sm:space-y-3 max-w-xs sm:max-w-sm"></div><!-- Main Content -->
-   <main class="max-w-6xl mx-auto p-3 sm:p-6">
-    <div class="mb-6 sm:mb-8 text-center">
-     <h2 class="text-2xl sm:text-3xl font-bold text-kenyang-primary mb-2">Menu Kantin Miracle</h2>
-     <p class="text-sm sm:text-base text-gray-600">Pilih makanan favoritmu dan pesan sekarang!</p>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6" id="menuItems"><!-- Menu items will be populated here -->
-    </div>
-   </main>
-  </div><!-- Seller Dashboard -->
-  <div id="sellerDashboard" class="hidden min-h-screen h-full w-full"><!-- Header -->
-   <header class="bg-gradient-to-r from-kenyang-primary to-kenyang-secondary text-white p-3 sm:p-4 shadow-lg">
-    <div class="flex justify-between items-center max-w-6xl mx-auto">
-     <div class="flex items-center space-x-2 sm:space-x-3"><span class="text-2xl sm:text-3xl">🍽️</span>
-      <div>
-       <h1 class="text-lg sm:text-2xl font-bold">Dashboard Penjual</h1>
-       <p id="sellerName" class="text-xs sm:text-sm opacity-90">Kantin Miracle</p>
-      </div>
-     </div>
-     <div class="flex items-center space-x-2 sm:space-x-4"><button onclick="showQRISSettings()" class="relative bg-yellow-500 hover:bg-yellow-600 px-2 sm:px-4 py-1 sm:py-2 rounded-lg transition duration-300 shadow text-xs sm:text-base"> 📱<span class="hidden sm:inline"> QRIS</span> </button> <button onclick="showAddProduct()" class="bg-emerald-600 hover:bg-emerald-700 px-2 sm:px-4 py-1 sm:py-2 rounded-lg transition duration-300 shadow text-xs sm:text-base"> ➕<span class="hidden sm:inline"> Produk</span> </button> <button onclick="logout()" class="bg-red-500 hover:bg-red-600 px-2 sm:px-4 py-1 sm:py-2 rounded-lg transition duration-300 shadow text-xs sm:text-base">Keluar</button>
-     </div>
-    </div>
-   </header><!-- Notification Container for Sellers -->
-   <div id="sellerNotificationContainer" class="fixed top-16 sm:top-20 right-2 sm:right-4 z-50 space-y-2 sm:space-y-3 max-w-xs sm:max-w-sm"></div><!-- Main Content -->
-   <main class="max-w-6xl mx-auto p-3 sm:p-6"><!-- Quick Stats -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
-     <div class="bg-white rounded-lg shadow-lg p-3 sm:p-4 border-l-4 border-green-500">
-      <div class="flex items-center justify-between">
-       <div>
-        <p class="text-xs sm:text-sm text-gray-600">Total Pesanan</p>
-        <p id="totalOrders" class="text-xl sm:text-2xl font-bold text-green-600">0</p>
-       </div>
-       <div class="text-2xl sm:text-3xl">
-        📋
-       </div>
-      </div>
-     </div>
-     <div class="bg-white rounded-lg shadow-lg p-3 sm:p-4 border-l-4 border-blue-500">
-      <div class="flex items-center justify-between">
-       <div>
-        <p class="text-xs sm:text-sm text-gray-600">Sudah Bayar</p>
-        <p id="paidOrders" class="text-xl sm:text-2xl font-bold text-blue-600">0</p>
-       </div>
-       <div class="text-2xl sm:text-3xl">
-        ✅
-       </div>
-      </div>
-     </div>
-     <div class="bg-white rounded-lg shadow-lg p-3 sm:p-4 border-l-4 border-red-500">
-      <div class="flex items-center justify-between">
-       <div>
-        <p class="text-xs sm:text-sm text-gray-600">Belum Bayar</p>
-        <p id="unpaidOrders" class="text-xl sm:text-2xl font-bold text-red-600">0</p>
-       </div>
-       <div class="text-2xl sm:text-3xl">
-        ❌
-       </div>
-      </div>
-     </div>
-     <div class="bg-white rounded-lg shadow-lg p-3 sm:p-4 border-l-4 border-yellow-500">
-      <div class="flex items-center justify-between">
-       <div>
-        <p class="text-xs sm:text-sm text-gray-600">Pendapatan</p>
-        <p id="totalRevenue" class="text-base sm:text-lg font-bold text-yellow-600">Rp 0</p>
-       </div>
-       <div class="text-2xl sm:text-3xl">
-        💰
-       </div>
-      </div>
-     </div>
-    </div>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6"><!-- Product Management -->
-     <div class="lg:col-span-2">
-      <h2 class="text-xl sm:text-2xl font-bold text-kenyang-primary mb-3 sm:mb-4">Produk Saya</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4" id="sellerProducts"><!-- Products will be populated here -->
-      </div>
-     </div><!-- Orders -->
-     <div>
-      <div class="flex items-center justify-between mb-3 sm:mb-4">
-       <h2 class="text-xl sm:text-2xl font-bold text-kenyang-primary">Pesanan Hari Ini</h2><span id="newOrderBadge" class="hidden bg-red-500 text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-bold notification-badge"> Baru! </span>
-      </div>
-      <div class="space-y-3 sm:space-y-4" id="todayOrders"><!-- Orders will be populated here -->
-      </div>
-     </div>
-    </div>
-   </main>
-  </div><!-- Modals akan ditampilkan di sini (sama seperti sebelumnya tapi dengan responsive styling) --> <!-- Untuk singkatnya, saya tidak mengulangi semua modal HTML, tapi implementasinya sama dengan responsive classes -->
-  <script>
-        // Database using Data SDK
-        let allData = [];
-        let currentUser = null;
-        let userType = null;
-        let cart = [];
-        let currentOrderId = null;
-        let dataInitialized = false;
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+</head>
 
-        const dataHandler = {
-            onDataChanged(data) {
-                allData = data;
-                
-                if (!dataInitialized) {
-                    dataInitialized = true;
-                }
-                
-                if (userType === 'seller') {
-                    loadSellerProducts();
-                    loadTodayOrders();
-                }
-                
-                if (userType === 'student') {
-                    loadMenuItems();
-                }
-            }
-        };
+<body class="bg-gray-100">
 
-        async function initializeDatabase() {
-            const result = await window.dataSdk.init(dataHandler);
-            if (!result.isOk) {
-                console.error('Failed to initialize SDK:', result.error);
-                showNotification('Gagal menginisialisasi database', 'error');
-            }
-        }
+<!-- ========= LOGIN PAGE ========= -->
+<div id="loginPage" class="min-h-screen flex items-center justify-center">
+  <div class="bg-white shadow-xl p-8 rounded-xl w-96">
+    <h1 class="text-2xl font-bold text-center mb-6">kenyang.in</h1>
 
-        initializeDatabase();
+    <input id="email" type="email" class="w-full p-3 border rounded mb-3" placeholder="Email">
+    <input id="password" type="password" class="w-full p-3 border rounded mb-3" placeholder="Password">
 
-        // Helper functions for data management
-        function getUsers() {
-            return allData.filter(item => item.type === 'user');
-        }
+    <button onclick="login()" class="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700">
+      Login
+    </button>
 
-        function getProducts() {
-            return allData.filter(item => item.type === 'product');
-        }
+    <p class="mt-3 text-center text-sm">
+      Belum punya akun?
+      <a onclick="toggleRegister()" class="text-blue-600 cursor-pointer">Daftar</a>
+    </p>
+  </div>
+</div>
 
-        function getOrders() {
-            return allData.filter(item => item.type === 'order');
-        }
+<!-- ========= REGISTER PAGE ========= -->
+<div id="registerPage" class="min-h-screen hidden flex items-center justify-center">
+  <div class="bg-white shadow-xl p-8 rounded-xl w-96">
 
-        function getQRIS() {
-            const qris = allData.find(item => item.type === 'qris');
-            return qris || { type: 'qris', qrisImage: '' };
-        }
+    <h1 class="text-2xl font-bold text-center mb-6">Daftar Akun</h1>
 
-        async function addUser(userData) {
-            const result = await window.dataSdk.create({
-                type: 'user',
-                username: userData.username,
-                password: userData.password,
-                name: userData.name,
-                timestamp: new Date().toISOString()
-            });
-            
-            if (!result.isOk) {
-                console.error('Error creating user:', result.error);
-                return false;
-            }
-            return true;
-        }
+    <input id="regName" type="text" class="w-full p-3 border rounded mb-3" placeholder="Nama">
+    <input id="regEmail" type="email" class="w-full p-3 border rounded mb-3" placeholder="Email">
+    <input id="regPass" type="password" class="w-full p-3 border rounded mb-3" placeholder="Password">
 
-        async function addProduct(productData) {
-            const result = await window.dataSdk.create({
-                type: 'product',
-                productId: Date.now(),
-                productName: productData.name,
-                price: productData.price,
-                description: productData.description,
-                image: productData.image,
-                addons: JSON.stringify(productData.addons),
-                timestamp: new Date().toISOString()
-            });
-            
-            if (!result.isOk) {
-                console.error('Error creating product:', result.error);
-                return false;
-            }
-            return true;
-        }
+    <select id="regRole" class="w-full p-3 border rounded mb-3">
+      <option value="siswa">Siswa</option>
+      <option value="penjual">Penjual</option>
+    </select>
 
-        async function addOrder(orderData) {
-            const result = await window.dataSdk.create({
-                type: 'order',
-                orderId: Date.now(),
-                student: orderData.student,
-                items: JSON.stringify(orderData.items),
-                total: orderData.total,
-                payment: orderData.payment,
-                status: orderData.status,
-                paymentStatus: orderData.paymentStatus,
-                paymentProof: orderData.paymentProof || '',
-                notificationSent: false,
-                completionNotificationSent: false,
-                timestamp: new Date().toISOString()
-            });
-            
-            if (!result.isOk) {
-                console.error('Error creating order:', result.error);
-                return null;
-            }
-            return { id: orderData.orderId, ...orderData };
-        }
+    <button onclick="register()" class="w-full bg-green-600 text-white p-3 rounded hover:bg-green-700">
+      Daftar
+    </button>
 
-        async function updateOrder(backendId, updates) {
-            const order = allData.find(item => item.__backendId === backendId);
-            if (!order) return false;
-            
-            const result = await window.dataSdk.update({
-                ...order,
-                ...updates
-            });
-            
-            if (!result.isOk) {
-                console.error('Error updating order:', result.error);
-                return false;
-            }
-            return true;
-        }
+    <p class="mt-3 text-center text-sm">
+      Sudah punya akun?
+      <a onclick="toggleRegister()" class="text-blue-600 cursor-pointer">Login</a>
+    </p>
+  </div>
+</div>
 
-        async function saveQRIS(qrisImage) {
-            const existing = getQRIS();
-            
-            if (existing.__backendId) {
-                const result = await window.dataSdk.update({
-                    ...existing,
-                    qrisImage: qrisImage
-                });
-                return result.isOk;
-            } else {
-                const result = await window.dataSdk.create({
-                    type: 'qris',
-                    qrisImage: qrisImage,
-                    timestamp: new Date().toISOString()
-                });
-                return result.isOk;
-            }
-        }
+<!-- ========= DASHBOARD SISWA ========= -->
+<div id="siswaPage" class="hidden p-6">
+  <h1 class="text-xl font-bold mb-4">Menu Kantin Bougenville</h1>
 
-        function getUserByUsername(username) {
-            const users = getUsers();
-            return users.find(user => user.username === username);
-        }
+  <div id="produkList" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
 
-        // Check if it's break time
-        function isBreakTime() {
-            const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const currentTime = hours * 60 + minutes;
-            
-            const break1Start = 9 * 60 + 30;
-            const break1End = 9 * 60 + 55;
-            const break2Start = 11 * 60 + 55;
-            const break2End = 12 * 60 + 20;
-            
-            return (currentTime >= break1Start && currentTime <= break1End) || 
-                   (currentTime >= break2Start && currentTime <= break2End);
-        }
+  <h2 class="text-xl font-semibold mt-8 mb-2">Pesanan Saya</h2>
+  <div id="pesananList" class="space-y-2"></div>
 
-        function showBreakTimeWarning() {
-            const warningElement = document.getElementById('breakTimeWarning');
-            if (!warningElement) return;
-            
-            if (isBreakTime()) {
-                warningElement.classList.remove('hidden');
-            } else {
-                warningElement.classList.add('hidden');
-            }
-        }
+  <button onclick="logout()" class="fixed bottom-5 right-5 bg-red-600 text-white px-5 py-3 rounded-lg">
+    Logout
+  </button>
+</div>
 
-        // Notification system
-        function showNotification(message, type = 'info', duration = 5000) {
-            const container = userType === 'student' 
-                ? document.getElementById('studentNotificationContainer')
-                : document.getElementById('sellerNotificationContainer');
-            
-            if (!container) return;
-            
-            const notification = document.createElement('div');
-            notification.className = `notification-enter bg-white rounded-lg shadow-2xl p-3 sm:p-4 border-l-4 ${
-                type === 'success' ? 'border-green-500' : 
-                type === 'error' ? 'border-red-500' : 
-                type === 'warning' ? 'border-yellow-500' :
-                'border-blue-500'
-            }`;
-            
-            const icon = type === 'success' ? '✅' : 
-                        type === 'error' ? '❌' : 
-                        type === 'warning' ? '⚠️' : 
-                        '📢';
-            
-            notification.innerHTML = `
-                <div class="flex items-start space-x-2 sm:space-x-3">
-                    <span class="text-xl sm:text-2xl">${icon}</span>
-                    <div class="flex-1">
-                        <p class="font-medium text-gray-800 text-sm sm:text-base">${message}</p>
-                    </div>
-                    <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600 text-xl">
-                        ×
-                    </button>
-                </div>
-            `;
-            
-            container.appendChild(notification);
-            
-            if (duration > 0) {
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.remove();
-                    }
-                }, duration);
-            }
-        }
+<!-- ========= DASHBOARD PENJUAL ========= -->
+<div id="penjualPage" class="hidden p-6">
+  <h1 class="text-xl font-bold mb-4">Dashboard Penjual</h1>
 
-        // Registration
-        function showRegister() {
-            document.getElementById('loginSelection').classList.add('hidden');
-            document.getElementById('registerForm').classList.remove('hidden');
-        }
+  <h2 class="font-semibold mb-2">Tambah Produk</h2>
+  <input id="pName" placeholder="Nama Produk" class="p-2 border rounded w-full mb-2">
+  <input id="pPrice" placeholder="Harga" class="p-2 border rounded w-full mb-2" type="number">
 
-        async function handleRegister(event) {
-            event.preventDefault();
-            
-            const type = document.getElementById('registerType').value;
-            const name = document.getElementById('registerName').value;
-            const username = document.getElementById('registerUsername').value;
-            const password = document.getElementById('registerPassword').value;
-            const confirmPassword = document.getElementById('registerConfirmPassword').value;
-            
-            if (password !== confirmPassword) {
-                showNotification('Password dan konfirmasi password tidak cocok!', 'error');
-                return;
-            }
-            
-            if (getUserByUsername(username)) {
-                showNotification('Username sudah digunakan! Pilih username lain.', 'error');
-                return;
-            }
-            
-            const success = await addUser({
-                username: username,
-                password: password,
-                name: name,
-                type: type
-            });
-            
-            if (success) {
-                showNotification('Akun berhasil dibuat! Silakan login.', 'success');
-                
-                setTimeout(() => {
-                    document.getElementById('registerForm').classList.add('hidden');
-                    document.getElementById('loginSelection').classList.remove('hidden');
-                    
-                    document.getElementById('registerType').value = '';
-                    document.getElementById('registerName').value = '';
-                    document.getElementById('registerUsername').value = '';
-                    document.getElementById('registerPassword').value = '';
-                    document.getElementById('registerConfirmPassword').value = '';
-                }, 1500);
-            } else {
-                showNotification('Gagal membuat akun. Silakan coba lagi.', 'error');
-            }
-        }
+  <button onclick="addProduct()" class="bg-blue-600 text-white px-4 py-2 rounded">
+    Tambah
+  </button>
 
-        // Login functions
-        function showLogin(type) {
-            userType = type;
-            document.getElementById('loginSelection').classList.add('hidden');
-            document.getElementById('loginForm').classList.remove('hidden');
-            
-            if (type === 'student') {
-                document.getElementById('loginIcon').textContent = '👨‍🎓';
-                document.getElementById('loginTitle').textContent = 'Login Siswa';
-            } else {
-                document.getElementById('loginIcon').textContent = '👨‍🍳';
-                document.getElementById('loginTitle').textContent = 'Login Penjual';
-            }
-        }
+  <h2 class="font-semibold mt-6 mb-2">Daftar Produk</h2>
+  <div id="penjualProdukList" class="space-y-2"></div>
 
-        function backToSelection() {
-            document.getElementById('loginForm').classList.add('hidden');
-            document.getElementById('registerForm').classList.add('hidden');
-            document.getElementById('loginSelection').classList.remove('hidden');
-            userType = null;
-        }
+  <h2 class="font-semibold mt-6 mb-2">Pesanan Masuk</h2>
+  <div id="penjualPesananList" class="space-y-2"></div>
 
-        function handleLogin(event) {
-            event.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            const user = getUserByUsername(username);
-            
-            if (!user) {
-                showNotification('❌ Akun tidak ditemukan!', 'error');
-                return;
-            }
-            
-            if (user.password !== password) {
-                showNotification('🔒 Password salah!', 'error');
-                return;
-            }
-            
-            if (user.type !== userType) {
-                showNotification(`⚠️ Akun ini terdaftar sebagai ${user.type === 'student' ? 'siswa' : 'penjual'}!`, 'error');
-                return;
-            }
-            
-            currentUser = user;
-            document.getElementById('loginForm').classList.add('hidden');
-            
-            if (userType === 'student') {
-                document.getElementById('welcomeStudent').textContent = `Selamat datang, ${user.name}!`;
-                document.getElementById('studentDashboard').classList.remove('hidden');
-                loadMenuItems();
-                showBreakTimeWarning();
-                updateCartCount();
-                
-                setInterval(showBreakTimeWarning, 60000);
-            } else {
-                document.getElementById('sellerName').textContent = `${user.name}`;
-                document.getElementById('sellerDashboard').classList.remove('hidden');
-                loadSellerProducts();
-                loadTodayOrders();
-            }
-        }
+  <button onclick="logout()" class="fixed bottom-5 right-5 bg-red-600 text-white px-5 py-3 rounded-lg">
+    Logout
+  </button>
+</div>
 
-        function logout() {
-            currentUser = null;
-            userType = null;
-            cart = [];
-            currentOrderId = null;
-            document.getElementById('studentDashboard').classList.add('hidden');
-            document.getElementById('sellerDashboard').classList.add('hidden');
-            document.getElementById('loginSelection').classList.remove('hidden');
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-        }
+<script>
+/* ---------------- FIREBASE INIT ---------------- */
+const firebaseConfig = {
+  apiKey: "AIzaSyDVwHXH2-DRYqeNb3YXPkTuyh3IapySobk",
+  authDomain: "kenyangin.firebaseapp.com",
+  projectId: "kenyangin",
+  storageBucket: "kenyangin.firebasestorage.app",
+  messagingSenderId: "184701436940",
+  appId: "1:184701436940:web:1fab3e9826ec46fb0e5a29",
+  measurementId: "G-7B45DL87Q6"
+};
 
-        // Menu functions
-        function loadMenuItems() {
-            const container = document.getElementById('menuItems');
-            container.innerHTML = '';
-            
-            const products = getProducts();
-            
-            if (products.length === 0) {
-                container.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500"><p>Belum ada menu tersedia</p></div>';
-                return;
-            }
-            
-            products.forEach(product => {
-                const addons = product.addons ? JSON.parse(product.addons) : [];
-                
-                const productCard = document.createElement('div');
-                productCard.className = 'bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 transform hover:scale-105';
-                productCard.innerHTML = `
-                    <div class="relative">
-                        <img src="${product.image}" alt="${product.productName}" loading="lazy" class="w-full h-40 sm:h-48 object-cover" onerror="this.src='https://via.placeholder.com/400x300/059669/ffffff?text=Menu'; this.alt='Gambar tidak tersedia';">
-                        <div class="absolute top-2 right-2">
-                            <span class="text-xs px-2 sm:px-3 py-1 rounded-full bg-kenyang-primary text-white shadow-lg">Miracle</span>
-                        </div>
-                    </div>
-                    <div class="p-4 sm:p-6">
-                        <div class="mb-3 sm:mb-4">
-                            <h3 class="text-lg sm:text-xl font-bold text-kenyang-primary mb-2">${product.productName}</h3>
-                            <p class="text-gray-600 text-xs sm:text-sm mb-2">${product.description}</p>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xl sm:text-2xl font-bold text-kenyang-primary">Rp ${product.price.toLocaleString()}</span>
-                            <button onclick="orderItem(${product.productId})" class="bg-gradient-to-r from-kenyang-primary to-kenyang-secondary hover:from-kenyang-dark hover:to-kenyang-primary text-white px-4 sm:px-6 py-2 rounded-lg transition duration-300 shadow-lg text-sm sm:text-base">
-                                Pesan
-                            </button>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(productCard);
-            });
-        }
+const app = firebase.initializeApp(firebaseConfig);
+const auth = firebase.getAuth();
+const db = firebase.getDatabase();
 
-        function updateCartCount() {
-            document.getElementById('cartCount').textContent = cart.length;
-        }
+/* ---------------- PAGE STATE ---------------- */
+function toggleRegister() {
+  document.getElementById("loginPage").classList.toggle("hidden");
+  document.getElementById("registerPage").classList.toggle("hidden");
+}
 
-        // Load seller products
-        function loadSellerProducts() {
-            const container = document.getElementById('sellerProducts');
-            container.innerHTML = '';
-            
-            const products = getProducts();
-            
-            if (products.length === 0) {
-                container.innerHTML = '<div class="col-span-2 text-center py-8 text-gray-500"><p class="text-sm sm:text-base">Belum ada produk. Klik "Tambah Produk"</p></div>';
-                return;
-            }
-            
-            products.forEach(product => {
-                const addons = product.addons ? JSON.parse(product.addons) : [];
-                
-                const productCard = document.createElement('div');
-                productCard.className = 'bg-white rounded-xl shadow-lg overflow-hidden';
-                productCard.innerHTML = `
-                    <div class="relative">
-                        <img src="${product.image}" alt="${product.productName}" loading="lazy" class="w-full h-28 sm:h-32 object-cover" onerror="this.src='https://via.placeholder.com/400x200/059669/ffffff?text=Menu';">
-                    </div>
-                    <div class="p-3 sm:p-4">
-                        <h3 class="text-base sm:text-lg font-bold text-kenyang-primary mb-2">${product.productName}</h3>
-                        <p class="text-gray-600 text-xs sm:text-sm mb-2">${product.description}</p>
-                        <p class="text-lg sm:text-xl font-bold text-kenyang-primary mb-3">Rp ${product.price.toLocaleString()}</p>
-                        <div class="flex space-x-2">
-                            <button onclick="deleteProduct('${product.__backendId}')" class="flex-1 bg-red-500 hover:bg-red-600 text-white px-3 sm:px-4 py-2 rounded-lg transition duration-300 text-xs sm:text-base">
-                                Hapus
-                            </button>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(productCard);
-            });
-        }
+/* ---------------- REGISTER ---------------- */
+async function register() {
+  const name = regName.value;
+  const email = regEmail.value;
+  const pass = regPass.value;
+  const role = regRole.value;
 
-        // Load today orders
-        function loadTodayOrders() {
-            const container = document.getElementById('todayOrders');
-            container.innerHTML = '';
-            
-            const orders = getOrders();
-            
-            if (orders.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-center py-4 text-sm sm:text-base">Belum ada pesanan</p>';
-                updateSellerStats(orders);
-                return;
-            }
-            
-            orders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-            
-            orders.forEach(order => {
-                const items = JSON.parse(order.items);
-                const hasPendingProof = order.paymentStatus === 'pending_confirmation' && order.paymentProof;
-                
-                const orderCard = document.createElement('div');
-                orderCard.className = `bg-white rounded-lg shadow-lg p-3 sm:p-4 border-l-4 ${
-                    order.status === 'completed' ? 'border-kenyang-primary' : 
-                    hasPendingProof ? 'border-orange-500' : 
-                    'border-yellow-500'
-                }`;
-                orderCard.innerHTML = `
-                    <div class="flex justify-between items-start mb-2">
-                        <h4 class="font-bold text-sm sm:text-base">${order.student}</h4>
-                        <span class="text-xs sm:text-sm px-2 py-1 rounded ${
-                            order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
-                            'bg-kenyang-light text-kenyang-primary'
-                        }">
-                            ${order.status === 'pending' ? '⏳ Menunggu' : '✅ Selesai'}
-                        </span>
-                    </div>
-                    <div class="text-xs sm:text-sm text-gray-600 mb-2">
-                        ${items.map(item => `${item.quantity}x ${item.name}`).join(', ')}
-                    </div>
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="font-bold text-kenyang-primary text-sm sm:text-base">Rp ${order.total.toLocaleString()}</span>
-                        <span class="text-xs px-2 py-1 rounded ${
-                            order.paymentStatus === 'paid' ? 'bg-green-100 text-green-800' : 
-                            order.paymentStatus === 'pending_confirmation' ? 'bg-orange-100 text-orange-800' :
-                            'bg-red-100 text-red-800'
-                        }">
-                            ${order.paymentStatus === 'paid' ? '💰 Lunas' : 
-                              order.paymentStatus === 'pending_confirmation' ? '📸 Cek' :
-                              '⏳ Belum'}
-                        </span>
-                    </div>
-                    ${hasPendingProof ? `
-                        <button onclick="confirmPaymentInline('${order.__backendId}', true)" class="w-full bg-green-500 hover:bg-green-600 text-white px-3 sm:px-4 py-2 rounded-lg transition duration-300 shadow mb-2 text-xs sm:text-sm">
-                            ✅ Konfirmasi Pembayaran
-                        </button>
-                    ` : ''}
-                    ${order.status === 'pending' ? `
-                        <button onclick="completeOrder('${order.__backendId}')" class="w-full bg-gradient-to-r from-kenyang-primary to-kenyang-secondary hover:from-kenyang-dark hover:to-kenyang-primary text-white px-3 sm:px-4 py-2 rounded-lg transition duration-300 shadow text-xs sm:text-sm">
-                            ✅ Pesanan Selesai
-                        </button>
-                    ` : `
-                        <div class="text-center text-kenyang-primary font-medium text-xs sm:text-sm">
-                            🎉 Pesanan sudah selesai
-                        </div>
-                    `}
-                `;
-                container.appendChild(orderCard);
-            });
-            
-            updateSellerStats(orders);
-        }
+  await firebase.createUserWithEmailAndPassword(auth, email, pass);
+  const uid = auth.currentUser.uid;
 
-        function updateSellerStats(orders) {
-            let totalOrders = orders.length;
-            let paidOrders = orders.filter(o => o.paymentStatus === 'paid').length;
-            let unpaidOrders = orders.filter(o => o.paymentStatus === 'unpaid' || o.paymentStatus === 'pending_confirmation').length;
-            let totalRevenue = orders.filter(o => o.paymentStatus === 'paid').reduce((sum, o) => sum + o.total, 0);
-            
-            document.getElementById('totalOrders').textContent = totalOrders;
-            document.getElementById('paidOrders').textContent = paidOrders;
-            document.getElementById('unpaidOrders').textContent = unpaidOrders;
-            document.getElementById('totalRevenue').textContent = `Rp ${totalRevenue.toLocaleString()}`;
-        }
+  await firebase.set(firebase.ref(db, "users/" + uid), {
+    name, email, role
+  });
 
-        async function completeOrder(backendId) {
-            const success = await updateOrder(backendId, { status: 'completed', completionNotificationSent: true });
-            if (success) {
-                showNotification('Pesanan berhasil diselesaikan!', 'success', 3000);
-            }
-        }
+  alert("Akun berhasil dibuat!");
+  toggleRegister();
+}
 
-        async function confirmPaymentInline(backendId, isApproved) {
-            if (isApproved) {
-                await updateOrder(backendId, { paymentStatus: 'paid' });
-                showNotification('✅ Pembayaran dikonfirmasi!', 'success');
-            }
-        }
+/* ---------------- LOGIN ---------------- */
+async function login() {
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("password").value;
 
-        // Add product modal stub (simplified for space)
-        function showAddProduct() {
-            showNotification('Fitur tambah produk akan segera hadir!', 'info');
-        }
+  await firebase.signInWithEmailAndPassword(auth, email, pass);
 
-        async function deleteProduct(backendId) {
-            const product = allData.find(item => item.__backendId === backendId);
-            if (!product) return;
-            
-            if (confirm(`Yakin ingin menghapus ${product.productName}?`)) {
-                const result = await window.dataSdk.delete(product);
-                if (result.isOk) {
-                    showNotification('Produk berhasil dihapus!', 'success');
-                } else {
-                    showNotification('Gagal menghapus produk', 'error');
-                }
-            }
-        }
+  loadUser();
+}
 
-        function showQRISSettings() {
-            showNotification('Fitur QRIS akan segera hadir!', 'info');
-        }
+async function loadUser() {
+  const uid = auth.currentUser.uid;
 
-        function orderItem(productId) {
-            showNotification('Fitur pesan akan segera hadir!', 'info');
-        }
+  const s = (await firebase.get(firebase.ref(db, "users/" + uid))).val();
 
-        function showCart() {
-            showNotification('Keranjang masih kosong', 'info');
-        }
+  loginPage.classList.add("hidden");
+  registerPage.classList.add("hidden");
 
-        function showPaymentHistory() {
-            showNotification('Fitur riwayat akan segera hadir!', 'info');
-        }
-    </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bff6f9086889d14',t:'MTc2ODc1MzM5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+  if (s.role === "siswa") {
+    siswaPage.classList.remove("hidden");
+    loadProducts();
+    loadMyOrders();
+  } else {
+    penjualPage.classList.remove("hidden");
+    loadProductsPenjual();
+    loadOrdersPenjual();
+  }
+}
+
+/* ---------------- LOGOUT ---------------- */
+function logout() {
+  firebase.signOut(auth);
+  location.reload();
+}
+
+/* ---------------- SISWA: LOAD PRODUK ---------------- */
+function loadProducts() {
+  firebase.onValue(firebase.ref(db, "products"), (snap) => {
+    const data = snap.val() || {};
+    produkList.innerHTML = "";
+
+    Object.entries(data).forEach(([id, p]) => {
+      produkList.innerHTML += `
+        <div class="bg-white p-4 rounded shadow">
+          <h3 class="font-semibold">${p.name}</h3>
+          <p>Rp ${p.price}</p>
+          <button onclick="order('${id}', '${p.name}', ${p.price})"
+            class="mt-2 bg-green-600 text-white px-3 py-1 rounded">
+            Pesan
+          </button>
+        </div>
+      `;
+    });
+  });
+}
+
+/* ---------------- SISWA: PESAN PRODUK ---------------- */
+function order(pid, name, price) {
+  const uid = auth.currentUser.uid;
+  const oid = Date.now();
+
+  firebase.set(firebase.ref(db, "orders/" + oid), {
+    buyer: uid,
+    name,
+    price,
+    time: new Date().toLocaleString()
+  });
+
+  alert("Pesanan dikirim!");
+}
+
+/* ---------------- SISWA: LOAD PESANAN ---------------- */
+function loadMyOrders() {
+  const uid = auth.currentUser.uid;
+
+  firebase.onValue(firebase.ref(db, "orders"), (snap) => {
+    const data = snap.val() || {};
+    pesananList.innerHTML = "";
+
+    Object.values(data)
+      .filter(o => o.buyer === uid)
+      .forEach(o => {
+        pesananList.innerHTML += `
+          <div class="bg-white p-3 rounded shadow">
+            ${o.name} – Rp ${o.price}
+            <p class="text-xs text-gray-500">${o.time}</p>
+          </div>
+        `;
+      });
+  });
+}
+
+/* ---------------- PENJUAL: ADD PRODUK ---------------- */
+function addProduct() {
+  const name = pName.value;
+  const price = pPrice.value;
+  const id = Date.now();
+
+  firebase.set(firebase.ref(db, "products/" + id), {
+    name, price
+  });
+
+  pName.value = "";
+  pPrice.value = "";
+}
+
+/* ---------------- PENJUAL: LOAD PRODUK ---------------- */
+function loadProductsPenjual() {
+  firebase.onValue(firebase.ref(db, "products"), (snap) => {
+    const data = snap.val() || {};
+    penjualProdukList.innerHTML = "";
+
+    Object.entries(data).forEach(([id, p]) => {
+      penjualProdukList.innerHTML += `
+        <div class="bg-white p-3 rounded shadow flex justify-between">
+          <div>${p.name} – Rp ${p.price}</div>
+          <button onclick="removeProduct('${id}')"
+            class="text-red-600">Hapus</button>
+        </div>
+      `;
+    });
+  });
+}
+
+function removeProduct(id) {
+  firebase.remove(firebase.ref(db, "products/" + id));
+}
+
+/* ---------------- PENJUAL: PESANAN MASUK ---------------- */
+function loadOrdersPenjual() {
+  firebase.onValue(firebase.ref(db, "orders"), (snap) => {
+    const data = snap.val() || {};
+    penjualPesananList.innerHTML = "";
+
+    Object.values(data).forEach(o => {
+      penjualPesananList.innerHTML += `
+        <div class="bg-white p-3 rounded shadow">
+          <strong>${o.name}</strong> – Rp ${o.price}
+          <p class="text-xs text-gray-500">${o.time}</p>
+        </div>
+      `;
+    });
+  });
+}
+
+</script>
+</body>
 </html>
