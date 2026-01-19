@@ -1,286 +1,236 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>kenyang.in – Kantin Bougenville</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kenyang.in - Ursulin Online Canteen</title>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+.badge { background-color: #10b981; color: white; padding: 2px 6px; font-size: 10px; border-radius: 4px; }
+img { max-width: 100px; max-height: 100px; border-radius: 8px; }
+</style>
+
 </head>
+<body class="bg-green-50 font-sans">
 
-<body class="bg-gray-100">
+<!-- LOGIN -->
+<div id="login" class="min-h-screen flex items-center justify-center">
+  <div class="bg-white p-6 rounded-xl shadow-xl w-80">
+    <h1 class="text-2xl font-bold text-center">Kenyang.in</h1>
+    <p class="text-center text-green-700">Ursulin Online Canteen</p>
+    <p class="text-xs italic text-center mb-4">Made by Jofran and Darren</p>
 
-<!-- ========= LOGIN PAGE ========= -->
-<div id="loginPage" class="min-h-screen flex items-center justify-center">
-  <div class="bg-white shadow-xl p-8 rounded-xl w-96">
-    <h1 class="text-2xl font-bold text-center mb-6">kenyang.in</h1>
-
-    <input id="email" type="email" class="w-full p-3 border rounded mb-3" placeholder="Email">
-    <input id="password" type="password" class="w-full p-3 border rounded mb-3" placeholder="Password">
-
-    <button onclick="login()" class="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700">
-      Login
-    </button>
-
-    <p class="mt-3 text-center text-sm">
-      Belum punya akun?
-      <a onclick="toggleRegister()" class="text-blue-600 cursor-pointer">Daftar</a>
-    </p>
-  </div>
-</div>
-
-<!-- ========= REGISTER PAGE ========= -->
-<div id="registerPage" class="min-h-screen hidden flex items-center justify-center">
-  <div class="bg-white shadow-xl p-8 rounded-xl w-96">
-
-    <h1 class="text-2xl font-bold text-center mb-6">Daftar Akun</h1>
-
-    <input id="regName" type="text" class="w-full p-3 border rounded mb-3" placeholder="Nama">
-    <input id="regEmail" type="email" class="w-full p-3 border rounded mb-3" placeholder="Email">
-    <input id="regPass" type="password" class="w-full p-3 border rounded mb-3" placeholder="Password">
-
-    <select id="regRole" class="w-full p-3 border rounded mb-3">
-      <option value="siswa">Siswa</option>
-      <option value="penjual">Penjual</option>
+    <input id="username" placeholder="Username" class="w-full mb-2 p-2 border rounded">
+    <input id="password" type="password" placeholder="Password" class="w-full mb-2 p-2 border rounded">
+    <select id="role" class="w-full mb-3 p-2 border rounded">
+      <option value="student">Siswa</option>
+      <option value="seller">Penjual</option>
+      <option value="admin">Admin</option>
     </select>
-
-    <button onclick="register()" class="w-full bg-green-600 text-white p-3 rounded hover:bg-green-700">
-      Daftar
-    </button>
-
-    <p class="mt-3 text-center text-sm">
-      Sudah punya akun?
-      <a onclick="toggleRegister()" class="text-blue-600 cursor-pointer">Login</a>
-    </p>
+    <button onclick="login()" class="w-full bg-green-600 text-white p-2 rounded">Masuk</button>
+    <button onclick="register()" class="w-full mt-2 text-green-700">Daftar</button>
   </div>
 </div>
 
-<!-- ========= DASHBOARD SISWA ========= -->
-<div id="siswaPage" class="hidden p-6">
-  <h1 class="text-xl font-bold mb-4">Menu Kantin Bougenville</h1>
+<!-- DASHBOARD SISWA -->
+<div id="student" class="hidden p-4">
+<h2 class="text-xl font-bold mb-2">Menu Kantin Miracle</h2>
+<div id="breakWarning" class="hidden bg-yellow-300 p-2 rounded mb-2"></div>
+<div id="menu" class="grid md:grid-cols-3 gap-4 mb-4"></div>
 
-  <div id="produkList" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+<h3 class="font-bold mb-1">Keranjang</h3>
+<div id="cart" class="mb-4"></div>
+<button onclick="checkout()" class="bg-green-600 text-white p-2 rounded mb-4">Checkout</button>
 
-  <h2 class="text-xl font-semibold mt-8 mb-2">Pesanan Saya</h2>
-  <div id="pesananList" class="space-y-2"></div>
-
-  <button onclick="logout()" class="fixed bottom-5 right-5 bg-red-600 text-white px-5 py-3 rounded-lg">
-    Logout
-  </button>
+<h3 class="font-bold mb-1">Riwayat Pesanan</h3>
+<div id="history"></div>
 </div>
 
-<!-- ========= DASHBOARD PENJUAL ========= -->
-<div id="penjualPage" class="hidden p-6">
-  <h1 class="text-xl font-bold mb-4">Dashboard Penjual</h1>
+<!-- DASHBOARD PENJUAL -->
+<div id="seller" class="hidden p-4">
+<h2 class="text-xl font-bold">Dashboard Kantin Miracle</h2>
 
-  <h2 class="font-semibold mb-2">Tambah Produk</h2>
-  <input id="pName" placeholder="Nama Produk" class="p-2 border rounded w-full mb-2">
-  <input id="pPrice" placeholder="Harga" class="p-2 border rounded w-full mb-2" type="number">
+<div class="bg-white p-4 rounded shadow mt-2">
+<h3 class="font-bold">Edit Pembayaran</h3>
+<input id="rekening" class="border p-2 w-full mb-2" placeholder="No Rekening BCA">
+<input id="gopay" class="border p-2 w-full mb-2" placeholder="No GoPay">
+<button onclick="savePayment()" class="bg-green-600 text-white p-2 rounded">Simpan</button>
+</div>
 
-  <button onclick="addProduct()" class="bg-blue-600 text-white px-4 py-2 rounded">
-    Tambah
-  </button>
+<h3 class="mt-4 font-bold">Tambah Menu Baru</h3>
+<input id="newName" placeholder="Nama Makanan" class="border p-2 w-full mb-2">
+<input id="newPrice" placeholder="Harga" type="number" class="border p-2 w-full mb-2">
+<input id="newImage" type="file" class="mb-2">
+<button onclick="addMenu()" class="bg-green-600 text-white p-2 rounded mb-2">Tambah Menu</button>
 
-  <h2 class="font-semibold mt-6 mb-2">Daftar Produk</h2>
-  <div id="penjualProdukList" class="space-y-2"></div>
+<h3 class="mt-4 font-bold">Pesanan Masuk</h3>
+<div id="orders"></div>
 
-  <h2 class="font-semibold mt-6 mb-2">Pesanan Masuk</h2>
-  <div id="penjualPesananList" class="space-y-2"></div>
+<h3 class="mt-4 font-bold">Statistik</h3>
+<div id="stats" class="bg-white p-2 rounded shadow"></div>
+</div>
 
-  <button onclick="logout()" class="fixed bottom-5 right-5 bg-red-600 text-white px-5 py-3 rounded-lg">
-    Logout
-  </button>
+<!-- DASHBOARD ADMIN -->
+<div id="admin" class="hidden p-4">
+<h2 class="text-xl font-bold">Admin Panel</h2>
+<div id="adminData" class="bg-white p-4 rounded shadow"></div>
 </div>
 
 <script>
-/* ---------------- FIREBASE INIT ---------------- */
-const firebaseConfig = {
-  apiKey: "AIzaSyDVwHXH2-DRYqeNb3YXPkTuyh3IapySobk",
-  authDomain: "kenyangin.firebaseapp.com",
-  projectId: "kenyangin",
-  storageBucket: "kenyangin.firebasestorage.app",
-  messagingSenderId: "184701436940",
-  appId: "1:184701436940:web:1fab3e9826ec46fb0e5a29",
-  measurementId: "G-7B45DL87Q6"
+// Data SDK simulasi
+const dataSdk = {
+  data: [],
+  callbacks: [],
+  init({onDataChanged}){ this.callbacks.push(onDataChanged); },
+  create(obj){ this.data.push(obj); this.update(); },
+  update(){ this.callbacks.forEach(cb=>cb(this.data)); },
+  get(){ return this.data; }
 };
 
-const app = firebase.initializeApp(firebaseConfig);
-const auth = firebase.getAuth();
-const db = firebase.getDatabase();
+let currentUser=null;
+let cartItems=[];
+let menuItems=[];
 
-/* ---------------- PAGE STATE ---------------- */
-function toggleRegister() {
-  document.getElementById("loginPage").classList.toggle("hidden");
-  document.getElementById("registerPage").classList.toggle("hidden");
+// Register user
+function register(){
+  if(!username.value||!password.value) return alert("Isi semua data");
+  dataSdk.create({type:"user", username:username.value, password:password.value, role:role.value});
+  alert("Akun dibuat!");
 }
 
-/* ---------------- REGISTER ---------------- */
-async function register() {
-  const name = regName.value;
-  const email = regEmail.value;
-  const pass = regPass.value;
-  const role = regRole.value;
-
-  await firebase.createUserWithEmailAndPassword(auth, email, pass);
-  const uid = auth.currentUser.uid;
-
-  await firebase.set(firebase.ref(db, "users/" + uid), {
-    name, email, role
-  });
-
-  alert("Akun berhasil dibuat!");
-  toggleRegister();
+// Login
+function login(){
+  const u=dataSdk.get().find(x=>x.type=="user"&&x.username==username.value&&x.password==password.value);
+  if(!u) return alert("Login gagal!");
+  currentUser=u;
+  login.style.display="none";
+  if(u.role=="student") student.classList.remove("hidden");
+  if(u.role=="seller") seller.classList.remove("hidden");
+  if(u.role=="admin") admin.classList.remove("hidden");
+  render();
 }
 
-/* ---------------- LOGIN ---------------- */
-async function login() {
-  const email = document.getElementById("email").value;
-  const pass = document.getElementById("password").value;
-
-  await firebase.signInWithEmailAndPassword(auth, email, pass);
-
-  loadUser();
+// Save payment info
+function savePayment(){
+  dataSdk.create({type:"payment", rekening:rekening.value, gopay:gopay.value});
+  alert("Pembayaran diperbarui");
 }
 
-async function loadUser() {
-  const uid = auth.currentUser.uid;
-
-  const s = (await firebase.get(firebase.ref(db, "users/" + uid))).val();
-
-  loginPage.classList.add("hidden");
-  registerPage.classList.add("hidden");
-
-  if (s.role === "siswa") {
-    siswaPage.classList.remove("hidden");
-    loadProducts();
-    loadMyOrders();
-  } else {
-    penjualPage.classList.remove("hidden");
-    loadProductsPenjual();
-    loadOrdersPenjual();
-  }
+// Add menu (seller)
+function addMenu(){
+  const file=newImage.files[0];
+  const reader=new FileReader();
+  reader.onloadend=function(){
+    const menu={type:"menu", name:newName.value, price:parseInt(newPrice.value), image:reader.result};
+    menuItems.push(menu);
+    dataSdk.create(menu);
+    newName.value=""; newPrice.value=""; newImage.value="";
+    render();
+  };
+  if(file) reader.readAsDataURL(file);
 }
 
-/* ---------------- LOGOUT ---------------- */
-function logout() {
-  firebase.signOut(auth);
-  location.reload();
-}
-
-/* ---------------- SISWA: LOAD PRODUK ---------------- */
-function loadProducts() {
-  firebase.onValue(firebase.ref(db, "products"), (snap) => {
-    const data = snap.val() || {};
-    produkList.innerHTML = "";
-
-    Object.entries(data).forEach(([id, p]) => {
-      produkList.innerHTML += `
-        <div class="bg-white p-4 rounded shadow">
-          <h3 class="font-semibold">${p.name}</h3>
-          <p>Rp ${p.price}</p>
-          <button onclick="order('${id}', '${p.name}', ${p.price})"
-            class="mt-2 bg-green-600 text-white px-3 py-1 rounded">
-            Pesan
-          </button>
-        </div>
-      `;
+// Render dashboard
+function render(){
+  if(currentUser.role=="student"){
+    menu.innerHTML="";
+    const menus=dataSdk.get().filter(x=>x.type=="menu");
+    menus.forEach(m=>{
+      const div=document.createElement("div");
+      div.className="bg-white p-2 rounded shadow relative";
+      div.innerHTML=`<span class="badge absolute top-2 right-2">Miracle</span>
+        <h3 class="font-bold">${m.name}</h3>
+        <img src="${m.image}" alt="${m.name}">
+        <p>Rp ${m.price}</p>
+        <button onclick="addToCart('${m.name}')" class="bg-green-600 text-white p-1 rounded mt-1">Add</button>`;
+      menu.appendChild(div);
     });
-  });
+    renderCart();
+  }
+
+  // Break time warning
+  const now=new Date();
+  const m=now.getHours()*60+now.getMinutes();
+  if((m>=570&&m<=595)||(m>=715&&m<=740)){
+    breakWarning.innerText="⚠️ Jam Istirahat — Pesanan mungkin terlambat";
+    breakWarning.classList.remove("hidden");
+  }else breakWarning.classList.add("hidden");
+
+  if(currentUser.role=="seller") renderOrders();
+  if(currentUser.role=="admin") renderAdmin();
+  if(currentUser.role=="seller") renderStats();
 }
 
-/* ---------------- SISWA: PESAN PRODUK ---------------- */
-function order(pid, name, price) {
-  const uid = auth.currentUser.uid;
-  const oid = Date.now();
-
-  firebase.set(firebase.ref(db, "orders/" + oid), {
-    buyer: uid,
-    name,
-    price,
-    time: new Date().toLocaleString()
+// Cart
+function addToCart(name){
+  const item=dataSdk.get().find(x=>x.type=="menu"&&x.name==name);
+  cartItems.push(item);
+  renderCart();
+}
+function renderCart(){
+  cart.innerHTML="";
+  cartItems.forEach((c,i)=>{
+    const div=document.createElement("div");
+    div.className="border p-1 mb-1 flex justify-between items-center";
+    div.innerHTML=`<span>${c.name} - Rp ${c.price}</span><button onclick="removeFromCart(${i})" class="text-red-500">x</button>`;
+    cart.appendChild(div);
   });
+}
+function removeFromCart(i){ cartItems.splice(i,1); renderCart(); }
 
+// Checkout
+function checkout(){
+  if(cartItems.length==0) return alert("Keranjang kosong");
+  const paymentMethod=prompt("Metode bayar: QRIS, BCA, GoPay");
+  const order={type:"order", user:currentUser.username, items:[...cartItems], status:"Belum bayar", paymentMethod, timestamp:new Date().toISOString()};
+  dataSdk.create(order);
+  cartItems=[];
+  renderCart();
   alert("Pesanan dikirim!");
 }
 
-/* ---------------- SISWA: LOAD PESANAN ---------------- */
-function loadMyOrders() {
-  const uid = auth.currentUser.uid;
-
-  firebase.onValue(firebase.ref(db, "orders"), (snap) => {
-    const data = snap.val() || {};
-    pesananList.innerHTML = "";
-
-    Object.values(data)
-      .filter(o => o.buyer === uid)
-      .forEach(o => {
-        pesananList.innerHTML += `
-          <div class="bg-white p-3 rounded shadow">
-            ${o.name} – Rp ${o.price}
-            <p class="text-xs text-gray-500">${o.time}</p>
-          </div>
-        `;
-      });
+// Seller dashboard
+function renderOrders(){
+  orders.innerHTML="";
+  const allOrders=dataSdk.get().filter(x=>x.type=="order");
+  allOrders.forEach((o,i)=>{
+    const div=document.createElement("div");
+    div.className="border p-2 mb-2 bg-white rounded";
+    const items=o.items.map(it=>it.name).join(", ");
+    div.innerHTML=`<b>${o.user}</b> - ${o.status} - ${o.paymentMethod}<br>Items: ${items}
+    <button onclick="markDone(${i})" class="bg-green-600 text-white p-1 rounded mt-1">Selesai</button>`;
+    orders.appendChild(div);
   });
 }
-
-/* ---------------- PENJUAL: ADD PRODUK ---------------- */
-function addProduct() {
-  const name = pName.value;
-  const price = pPrice.value;
-  const id = Date.now();
-
-  firebase.set(firebase.ref(db, "products/" + id), {
-    name, price
-  });
-
-  pName.value = "";
-  pPrice.value = "";
+function markDone(i){
+  const allOrders=dataSdk.get().filter(x=>x.type=="order");
+  allOrders[i].status="Selesai";
+  dataSdk.update();
 }
 
-/* ---------------- PENJUAL: LOAD PRODUK ---------------- */
-function loadProductsPenjual() {
-  firebase.onValue(firebase.ref(db, "products"), (snap) => {
-    const data = snap.val() || {};
-    penjualProdukList.innerHTML = "";
-
-    Object.entries(data).forEach(([id, p]) => {
-      penjualProdukList.innerHTML += `
-        <div class="bg-white p-3 rounded shadow flex justify-between">
-          <div>${p.name} – Rp ${p.price}</div>
-          <button onclick="removeProduct('${id}')"
-            class="text-red-600">Hapus</button>
-        </div>
-      `;
-    });
-  });
+// Seller stats
+function renderStats(){
+  const allOrders=dataSdk.get().filter(x=>x.type=="order");
+  const total=allOrders.length;
+  const paid=allOrders.filter(o=>o.status=="Selesai").length;
+  const revenue=allOrders.reduce((a,o)=>a+o.items.reduce((s,it)=>s+it.price,0),0);
+  stats.innerHTML=`Total Pesanan: ${total}, Sudah Bayar: ${paid}, Total Pendapatan: Rp ${revenue}`;
 }
 
-function removeProduct(id) {
-  firebase.remove(firebase.ref(db, "products/" + id));
+// Admin
+function renderAdmin(){
+  const users=dataSdk.get().filter(x=>x.type=="user").length;
+  const orders=dataSdk.get().filter(x=>x.type=="order").length;
+  const revenue=dataSdk.get().filter(x=>x.type=="order").reduce((a,o)=>a+o.items.reduce((s,it)=>s+it.price,0),0);
+  adminData.innerHTML=`Users: ${users}, Orders: ${orders}, Revenue: Rp ${revenue}`;
 }
 
-/* ---------------- PENJUAL: PESANAN MASUK ---------------- */
-function loadOrdersPenjual() {
-  firebase.onValue(firebase.ref(db, "orders"), (snap) => {
-    const data = snap.val() || {};
-    penjualPesananList.innerHTML = "";
-
-    Object.values(data).forEach(o => {
-      penjualPesananList.innerHTML += `
-        <div class="bg-white p-3 rounded shadow">
-          <strong>${o.name}</strong> – Rp ${o.price}
-          <p class="text-xs text-gray-500">${o.time}</p>
-        </div>
-      `;
-    });
-  });
-}
-
+// Real-time update
+dataSdk.init({onDataChanged:()=>render()});
 </script>
+
 </body>
 </html>
